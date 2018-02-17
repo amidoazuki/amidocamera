@@ -14,11 +14,17 @@
             console.log("PhoneGap is ready");
         }
     </script>
+    <script src="amidocamera/main.js"></script>
 </head>
 <body>
 
-    <h1>HelloWorld!</h1>
-    <a class="button--large" href="phonegap-demo.html">Start Demo</a>
-
+    <h1>amidocamera!!</h1>
+    <a class="button--large" onclick="show_pic()">Start !!</a>
+    <div id="viewport" class="viewport" style="width:100%;margin:0 auto;">
+        <img style="width:100%;" id="taken_image" src=""/>
+    </div>
+    <div id="image_list">
+        
+    </div>
 </body>
 </html>

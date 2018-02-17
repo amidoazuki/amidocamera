@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" id="com.example.helloworld" version="1.0.0">
-  <name>Hello World App</name>
+  <name>amidocamera</name>
   <description>Made with Monaca (http://monaca.mobi)</description>
   <author/>
   <content src="index.html"/>
@@ -84,9 +84,6 @@
     </edit-config>
     <edit-config target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="merge">
       <string>need to photo library access to save pictures there</string>
-    </edit-config>
-    <edit-config target="NSContactsUsageDescription" file="*-Info.plist" mode="merge">
-      <string>need contacts access to search friends</string>
     </edit-config>
   </platform>
   <platform name="android">
