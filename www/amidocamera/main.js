@@ -16,62 +16,57 @@
        specific language governing permissions and limitations
        under the License.
 */
+(function(){
 
+var pictureCount = 0;
+var imageList = $('#imageList');
+var startButton = $('#start-button');
 
-var beep = function() {
-    var my_media = new Media("beep.wav",
-        // success callback
-        function() {
-            console.log("playAudio():Audio Success");
-        },
-        // error callback
-        function(err) {
-            console.log("playAudio():Audio Error: "+err);
-    }).play();
+var picturePreview = function(data) {
+    $('#imagePreview').attr({'src': "data:image/jpeg;base64," + data});
+    $('#imagePreview').css('display', 'inherit')
 };
 
-var vibrate = function() {
-    navigator.vibrate(500);
-};
-
-var preventBehavior = function(e) {
-    e.preventDefault();
-};
-
-function dump_pic(data) {
-    var viewport = document.getElementById('viewport');
-    viewport.style.display = "";
-    viewport.style.position = "absolute";
-    viewport.style.top = "10px";
-    viewport.style.left = "10px";
-    document.getElementById("taken_image").src = "data:image/jpeg;base64," + data;
+var closePreview = function() {
+    $('#imagePreview').css('display', 'none');
 }
 
-function fail(msg) {
+var fail = function(msg) {
     alert(msg);
 }
 
-function show_pic() {
-    navigator.camera.getPicture(dump_pic, fail, {
+function addStock(i, data) {
+    console.log('addStock'); //debug
+    var uri = 'data:image/jpeg;base64,' + data;
+    var imgtag = '<div class="container"><p><img class="stockImage" src="' + uri + '"/></p><p><b>' + i + '</b></p></div>';
+    imageList.prepend(imgtag);
+}
+
+var stockPicture = function(data) {
+    console.log('stockPicture'); //debug
+    pictureCount += 1;
+    addStock(pictureCount, data);
+}
+
+var takePicture = function() {
+    navigator.camera.getPicture(stockPicture, fail, {
         sourceType: Camera.PictureSourceType.CAMERA,
         encodingType: Camera.EncodingType.JPEG,
-        quality : 75,
+        quality : 90,
         destinationType: Camera.DestinationType.DATA_URL,
         targetWidth: 600,
         targetHeight: 800,
         correctOrientation: true
     });
 }
+startButton.click(takePicture);
+startButton.focus();
 
-function close() {
-    var viewport = document.getElementById('viewport');
-    viewport.style.position = "relative";
-    viewport.style.display = "none";
+// PhoneGap event handler
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    console.log("PhoneGap is ready");
 }
 
-function init() {
-    // the next line makes it impossible to see Contacts on the HTC Evo since it
-    // doesn't have a scroll button
-    // document.addEventListener("touchmove", preventBehavior, false);
-    document.addEventListener("deviceready", deviceInfo, true);
-}
+
+})()
