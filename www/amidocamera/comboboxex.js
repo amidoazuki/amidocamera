@@ -85,7 +85,7 @@ $.widget( "my.comboboxex", {
  
         // 以降、リスト内に見つからなかった場合の処理
         if (value.length > 0) {
-            this.input.attr( "title", value + " は見つかりません。" ).tooltip( "open" );
+            this.input.attr( "title", value + " not found." ).tooltip( "open" );
             this._delay(function() {
                 this.input.tooltip( "close" ).attr( "title", "" );
             }, 1500 );

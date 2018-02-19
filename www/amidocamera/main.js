@@ -25,7 +25,7 @@ var attendeeList = '';
 var attendees = [];
 
 // retrieve the list as plain-text
-var fetchAttendeeList = function() {
+var fetchAndLoadAttendeeList = function() {
     $.get('amidocamera/urls.txt', function(data) {
         var lines = data.split(/\r\n|\r|\n/);
         attendeeList = lines[0]; // the first line
@@ -33,12 +33,23 @@ var fetchAttendeeList = function() {
             var lines = data.split(/\r\n|\r|\n/);
             for (var i=0; i<lines.length; i++) {
                 if (lines[i].length > 0) {
-                    console.log(lines[i]);
+//                    console.log(lines[i]);
                     attendees[i] = lines[i];
                 }
             }
+            loadNameList();
         });
     });
+}
+
+var loadNameList = function () {
+    options = $.map(attendees, function(n, i) {
+        console.log(n);
+        return $('<option>', { value: i, text: n, selected: false });
+    });
+    var $namelist = $('#namelist');
+    $namelist.append(options);
+    $namelist.comboboxex();
 }
 
 var picturePreview = function(data) {
@@ -85,7 +96,7 @@ startButton.focus();
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
     console.log("PhoneGap is ready");
-    fetchAttendeeList();
+    fetchAndLoadAttendeeList();
 }
 
 

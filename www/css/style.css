@@ -135,7 +135,30 @@ h2 {
     margin: 0 auto;
     border: solid;
     border-color: white;
+    text-align: center;
+/*
     display: none;  
+*/
 }
 #imagePreview {
+}
+
+#namelist {
+    width: 100%;
+}
+
+option .namelist {
+    background-color: white;
+}
+.custom-combobox {
+    width: 90%;
+    background-color: blue;
+}
+.custom-combobox-input {
+    width: 90%;
+    background-color: silver;
+}
+.custom-combobox-toggle {
+    width: 90%;
+    background-color: green;
 }
