@@ -37,39 +37,61 @@ var fetchAndLoadAttendeeList = function() {
                     attendees[i] = lines[i];
                 }
             }
-            loadNameList();
         });
     });
 }
 
+// setup autocomplete for name list
 var loadNameList = function () {
-    options = $.map(attendees, function(n, i) {
-        console.log(n);
-        return $('<option>', { value: i, text: n, selected: false });
+    $("#photoName").autocomplete( {
+        source: attendees,
+        classes: {
+            'ui-autocomplete': 'nameInput',
+        } 
     });
-    var $namelist = $('#namelist');
-    $namelist.append(options);
-    $namelist.comboboxex();
 }
 
 var picturePreview = function(data) {
-    $('#imagePreview').attr({'src': "data:image/jpeg;base64," + data});
-    $('#imagePreview').css('display', 'inherit')
+    $('#imagePreview').attr({'src': data, 'width': '100vw', 'height': 'auto'});
 };
-
-var closePreview = function() {
-    $('#imagePreview').css('display', 'none');
-}
 
 var fail = function(msg) {
     alert(msg);
 }
 
+var uploadPhoto = function(ev) {
+    var img = ev.target;
+    var form = $('#pictureForm');
+    console.log('uploadPhoto');
+    form.dialog({
+        position: 'center',
+        modal: 'true',
+        show: 'fade',
+        hide: 'fade',
+        zIndex: '2',
+        draggable: 'true',
+        resizable: 'true',
+        buttons: {
+            "OK": function(){
+                $(this).dialog('close');
+            }
+        }
+    });   
+    picturePreview(img.src);
+    form.dialog('widget');
+    form.dialog('moveToTop');
+    loadNameList();
+}
+
 function addStock(i, data) {
     console.log('addStock'); //debug
     var uri = 'data:image/jpeg;base64,' + data;
-    var imgtag = '<div class="container"><p><img class="stockImage" src="' + uri + '"/></p><p><b>' + i + '</b></p></div>';
-    imageList.prepend(imgtag);
+    var imgtag = $('<img>', {src: uri, class: 'stockImage'});
+    var divtag = $('<div>');
+    divtag.append('<p><b>' + i + '</b></p>');
+    imgtag.click(uploadPhoto);
+    divtag.prepend(imgtag);
+    imageList.prepend(divtag);
 }
 
 var stockPicture = function(data) {

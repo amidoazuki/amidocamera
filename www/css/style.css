@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 10px;
-    background-color: #ccc;
+    background-color: Silver;
     font-family: 'Helvetica';
 }
 
@@ -10,7 +10,7 @@ h1 {
     text-align: center;
     font-size: 40px;
     padding: 0;
-    margin: 20px 0 10px 0;
+    margin: 100px 0 100px 0;
     color: white;
 }
 
@@ -82,6 +82,10 @@ h2 {
   display: block;
   width: 100%;
 }
+
+.button--large {
+    margin: 20px 0 20px 0;
+}
 .button--large:active {
   background-color: #1284ff;
   -webkit-box-shadow: none;
@@ -122,7 +126,7 @@ h2 {
 }
 
 .stockImage {
-    width: 50%;
+    width: 50vw;
     height: auto;
     margin: 0 auto;
     border: solid;
@@ -130,35 +134,25 @@ h2 {
 }
 
 #pictureForm {
-    width: 80%;
-    height: auto;
-    margin: 0 auto;
-    border: solid;
-    border-color: white;
     text-align: center;
-/*
-    display: none;  
-*/
-}
-#imagePreview {
+    display: none; /* Hidden by default */
 }
 
-#namelist {
+.dialogForm {
+    position: fixed; /* Sit on top of the page content */
+    width: 100vw;
+    height: 100vh;
+    top: 0vh;
+    left: 0vw;
+    right: 0vw;
+    bottom: 0vh;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    cursor: pointer; /* Add a pointer on hover */
+}
+
+.nameInput {
+    z-index: 2;
+}
+#photoName {
     width: 100%;
-}
-
-option .namelist {
-    background-color: white;
-}
-.custom-combobox {
-    width: 90%;
-    background-color: blue;
-}
-.custom-combobox-input {
-    width: 90%;
-    background-color: silver;
-}
-.custom-combobox-toggle {
-    width: 90%;
-    background-color: green;
 }

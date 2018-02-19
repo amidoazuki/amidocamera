@@ -6,8 +6,9 @@
     <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: content: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
     <script src="components/loader.js"></script>
     <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="components/jquery-ui-1.12.1.custom/jquery-ui.min.css">
+    <link rel="stylesheet" href="components/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <script src="amidocamera/comboboxex.js"></script>
 </head>
 <body>
     <div id="viewport" class="viewport">
@@ -16,13 +17,13 @@
         Take pictures of people and click to name and upload them!!
         </h2>
         <button id="start-button" class="button--large">Start camera !!</button>
-        <div id='pictureForm'>
+        <div id="pictureForm">
             <img id="imagePreview" src=""/>
-                Input name:
-                <select id="namelist" class="namelist">
-                       <option value="">Please input name</option>
-                </select>
+            <div id="nameInput" class="ui-widget nameInput">
+                <label for="photoName">Input name: </label>
+                <input id="photoName">
             </div>
+        </div>
         <div id="imageList" class="container"></div>
     </div>
     <script src="amidocamera/main.js"></script>
