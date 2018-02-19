@@ -21,6 +21,25 @@
 var pictureCount = 0;
 var imageList = $('#imageList');
 var startButton = $('#start-button');
+var attendeeList = '';
+var attendees = [];
+
+// retrieve the list as plain-text
+var fetchAttendeeList = function() {
+    $.get('amidocamera/urls.txt', function(data) {
+        var lines = data.split(/\r\n|\r|\n/);
+        attendeeList = lines[0]; // the first line
+        $.get(attendeeList, function(data) {
+            var lines = data.split(/\r\n|\r|\n/);
+            for (var i=0; i<lines.length; i++) {
+                if (lines[i].length > 0) {
+                    console.log(lines[i]);
+                    attendees[i] = lines[i];
+                }
+            }
+        });
+    });
+}
 
 var picturePreview = function(data) {
     $('#imagePreview').attr({'src': "data:image/jpeg;base64," + data});
@@ -52,7 +71,7 @@ var takePicture = function() {
     navigator.camera.getPicture(stockPicture, fail, {
         sourceType: Camera.PictureSourceType.CAMERA,
         encodingType: Camera.EncodingType.JPEG,
-        quality : 90,
+        quality : 70,
         destinationType: Camera.DestinationType.DATA_URL,
         targetWidth: 600,
         targetHeight: 800,
@@ -66,6 +85,7 @@ startButton.focus();
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
     console.log("PhoneGap is ready");
+    fetchAttendeeList();
 }
 
 

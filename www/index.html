@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="components/loader.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="components/jquery.csv.js"></script>
+    <script src="amidocamera/comboboxex.js"></script>
 </head>
 <body>
     <div id="viewport" class="viewport">
@@ -16,7 +17,12 @@
         Take pictures of people and click to name and upload them!!
         </h2>
         <button id="start-button" class="button--large">Start camera !!</button>
-        <img id="imagePreview" src=""/>
+        <div id='pictureForm'>
+            <img id="imagePreview" src=""/>
+            <select id="cbox">
+                <option value="">Please input name</option>
+            </select>
+        </div>
         <div id="imageList" class="container"></div>
     </div>
     <script src="amidocamera/main.js"></script>
