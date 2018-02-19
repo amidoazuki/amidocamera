@@ -37,9 +37,10 @@ var fetchAndLoadAttendeeList = function() {
                     attendees[i] = lines[i];
                 }
             }
+            loadNameList();
         });
     });
-}
+};
 
 // setup autocomplete for name list
 var loadNameList = function () {
@@ -49,7 +50,7 @@ var loadNameList = function () {
             'ui-autocomplete': 'nameInput',
         } 
     });
-}
+};
 
 var picturePreview = function(data) {
     $('#imagePreview').attr({'src': data, 'width': '100vw', 'height': 'auto'});
@@ -57,31 +58,23 @@ var picturePreview = function(data) {
 
 var fail = function(msg) {
     alert(msg);
-}
+};
 
+// generate dialog-like screen..
 var uploadPhoto = function(ev) {
     var img = ev.target;
     var form = $('#pictureForm');
     console.log('uploadPhoto');
-    form.dialog({
-        position: 'center',
-        modal: 'true',
-        show: 'fade',
-        hide: 'fade',
-        zIndex: '2',
-        draggable: 'true',
-        resizable: 'true',
-        buttons: {
-            "OK": function(){
-                $(this).dialog('close');
-            }
-        }
-    });   
     picturePreview(img.src);
-    form.dialog('widget');
-    form.dialog('moveToTop');
-    loadNameList();
-}
+    form.css({'display': 'inherit'});
+    $('#cancelPhoto').click(function() {
+        form.css({'display': 'none'});
+    });
+    $('#removePhoto').click(function() {
+        img.parentNode.remove();
+        picturePreview(''); // clear preview
+    });
+};
 
 function addStock(i, data) {
     console.log('addStock'); //debug
@@ -98,7 +91,7 @@ var stockPicture = function(data) {
     console.log('stockPicture'); //debug
     pictureCount += 1;
     addStock(pictureCount, data);
-}
+};
 
 var takePicture = function() {
     navigator.camera.getPicture(stockPicture, fail, {
@@ -110,7 +103,7 @@ var takePicture = function() {
         targetHeight: 800,
         correctOrientation: true
     });
-}
+};
 startButton.click(takePicture);
 startButton.focus();
 

@@ -23,6 +23,14 @@ h2 {
     color: blue;
 }
 
+h3 {
+    text-shadow: 0 -1px 0 #999;
+    text-align: center;
+    font-size: 15px;
+    padding: 0;
+    margin: 2px 0 2px 0;
+    color: white;
+}
 /**
  * Large Button Component
  * http://components.onsenui.io/
@@ -118,6 +126,16 @@ h2 {
   outline: 0;
 }
 
+.btn {
+    display: block;
+    width: 96px;
+    height: 32px;
+    line-height: 32px;
+    background-color: #3692ff;
+    color: #fff;
+    text-align: center;
+}
+ 
 .viewport {
     width:100%;
 }
@@ -136,9 +154,6 @@ h2 {
 #pictureForm {
     text-align: center;
     display: none; /* Hidden by default */
-}
-
-.dialogForm {
     position: fixed; /* Sit on top of the page content */
     width: 100vw;
     height: 100vh;
@@ -146,13 +161,15 @@ h2 {
     left: 0vw;
     right: 0vw;
     bottom: 0vh;
-    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    background-color: rgba(0,0,0,0.9); /* Black background with opacity */
     cursor: pointer; /* Add a pointer on hover */
+    z-index: 2;
 }
 
 .nameInput {
     z-index: 2;
 }
+
 #photoName {
-    width: 100%;
+    width: 60%;
 }
