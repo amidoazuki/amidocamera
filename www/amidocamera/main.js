@@ -22,6 +22,8 @@ var pictureCount = 0;
 var imageList = $('#imageList');
 var startButton = $('#start-button');
 var attendeeList = '';
+var s3credential = '';
+var s3bucket = '';
 var attendees = [];
 
 // retrieve the list as plain-text
@@ -29,6 +31,8 @@ var fetchAndLoadAttendeeList = function() {
     $.get('amidocamera/urls.txt', function(data) {
         var lines = data.split(/\r\n|\r|\n/);
         attendeeList = lines[0]; // the first line
+        s3credential = lines[1];
+        s3bucket = lines[2];
         $.get(attendeeList, function(data) {
             var lines = data.split(/\r\n|\r|\n/);
             for (var i=0; i<lines.length; i++) {
@@ -61,19 +65,50 @@ var fail = function(msg) {
 };
 
 // generate dialog-like screen..
-var uploadPhoto = function(ev) {
+var uploadPhotoDialog = function(ev) {
+    ev.preventDefault();
+    console.log('uploadPhoto');
     var img = ev.target;
     var form = $('#pictureForm');
-    console.log('uploadPhoto');
+    var photoName = $('#photoName');
+    var uploadBtn = $('#uploadPhoto');
+    var removeBtn = $('#removePhoto');
+    var cancelBtn = $('#cancelPhoto');
+    uploadBtn.off('click'); // clear the event listner
+    removeBtn.off('click'); // clear the event listner
+    cancelBtn.off('click'); // clear the event listner
     picturePreview(img.src);
-    form.css({'display': 'inherit'});
-    $('#cancelPhoto').click(function() {
-        form.css({'display': 'none'});
+    uploadBtn.click(function(ev) {
+        ev.preventDefault();
+        if (photoName.val().length >0) {
+            if (confirm('Upload the photo as "' + photoName.val() + '" ?')) {
+                s3_upload(photoName.val(), img.src.substr(23), img.parentNode); // remove leading 'data:image/jpeg;base64,'
+            }
+        }
+        else {
+            alert('You must enter the name !!');
+        }
     });
-    $('#removePhoto').click(function() {
-        img.parentNode.remove();
-        picturePreview(''); // clear preview
+    cancelBtn.click(function(ev) {
+        ev.preventDefault();
+        closeUploadPhotoDialog();
     });
+    removeBtn.click(function(ev) {
+        ev.preventDefault();
+        if (confirm('Really delete ?')) {
+            closeUploadPhotoDialog();
+            img.parentNode.remove();
+            picturePreview(''); // clear preview
+        }
+    });
+    form.css({'display': 'inherit'}); // show it
+};
+
+var closeUploadPhotoDialog = function() {
+    var form = $('#pictureForm');
+    var photoName = $('#photoName');
+    form.css({'display': 'none'});
+    photoName.val(''); // empty the form
 };
 
 function addStock(i, data) {
@@ -82,7 +117,7 @@ function addStock(i, data) {
     var imgtag = $('<img>', {src: uri, class: 'stockImage'});
     var divtag = $('<div>');
     divtag.append('<p><b>' + i + '</b></p>');
-    imgtag.click(uploadPhoto);
+    imgtag.click(uploadPhotoDialog);
     divtag.prepend(imgtag);
     imageList.prepend(divtag);
 }
@@ -93,7 +128,8 @@ var stockPicture = function(data) {
     addStock(pictureCount, data);
 };
 
-var takePicture = function() {
+var takePicture = function(ev) {
+    ev.preventDefault();
     navigator.camera.getPicture(stockPicture, fail, {
         sourceType: Camera.PictureSourceType.CAMERA,
         encodingType: Camera.EncodingType.JPEG,
@@ -107,10 +143,56 @@ var takePicture = function() {
 startButton.click(takePicture);
 startButton.focus();
 
+// from http://yamano3201.hatenablog.jp/entry/2016/03/05/214018
+var dataURItoBlob = function(dataURI) {
+    var binary = atob(dataURI);
+    var array = [];
+    for (var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+	return new Blob([new Uint8Array(array)], {
+    });
+};
+
+// below 2 functions are derived from the codes at:
+// http://yamano3201.hatenablog.jp/entry/2016/03/05/214018
+// https://www.selfree.co.jp/2015/06/18/サーバーレスでjavascript-だけで画像ファイルをアップロードする方法
+var s3_client = function() {
+    console.log(s3credential);
+    console.log(s3bucket);
+    AWS.config.region = 'us-east-1'; // this is fixed ?
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: s3credential});
+    AWS.config.credentials.get(function(err) {
+        if (!err) {
+            console.log('Cognito Identify Id: ' + AWS.config.credentials.identityId);
+        }
+    });
+    return new AWS.S3({params: {Bucket: s3bucket}});
+};
+
+var s3_upload = function(photoName, dataURI, node2delete) {
+    s3_client().putObject({Key: photoName + '.jpg', ContentType: 'image/jpeg', Body: dataURItoBlob(dataURI), ACL: "public-read"},
+    function(err, data){
+        // if failed, alert
+        if(!err){
+            $(node2delete).find('b').text(photoName); // update the photo name
+            if(confirm('File successfully uploaded !\nDelete it ?')) {
+                node2delete.remove();
+            }
+            console.log('File successfully uploaded !')
+        } else {
+            alert('Error while uploading file...');
+            console.log('Error while uploading file...');
+            console.log(err);
+        }
+        closeUploadPhotoDialog();
+    });
+};
+
 // PhoneGap event handler
-document.addEventListener("deviceready", onDeviceReady, false);
+document.addEventListener('deviceready', onDeviceReady, false);
 function onDeviceReady() {
-    console.log("PhoneGap is ready");
+    console.log('PhoneGap is ready');
     fetchAndLoadAttendeeList();
 }
 

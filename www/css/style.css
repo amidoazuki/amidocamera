@@ -45,16 +45,12 @@ h3 {
   box-sizing: border-box;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  padding: 0;
-  margin: 0;
+  margin: 20px 0 20px 0;
   font: inherit;
-  color: inherit;
   background: transparent;
-  border: none;
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 400;
   cursor: default;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -67,7 +63,6 @@ h3 {
   text-decoration: none;
   padding: 4px 20px;
   font-size: 16px;
-  line-height: 36px;
   letter-spacing: 0;
   color: #fff;
   text-shadow: 0 1px none;
@@ -82,18 +77,14 @@ h3 {
   -moz-transition: background-color 0.2s linear, color 0.2s linear, opacity 0.2s linear;
   -o-transition: background-color 0.2s linear, color 0.2s linear, opacity 0.2s linear;
   transition: background-color 0.2s linear, color 0.2s linear, opacity 0.2s linear;
-  font-weight: 400;
   font-size: 16px;
   font-weight: 500;
   line-height: 36px;
-  padding: 4px 20px;
+  padding: 20px 10px 20px 10px;
   display: block;
   width: 100%;
 }
 
-.button--large {
-    margin: 20px 0 20px 0;
-}
 .button--large:active {
   background-color: #1284ff;
   -webkit-box-shadow: none;
@@ -127,8 +118,8 @@ h3 {
 }
 
 .btn {
-    display: block;
-    width: 96px;
+    display: inline;
+    width: 30vw;
     height: 32px;
     line-height: 32px;
     background-color: #3692ff;
@@ -164,6 +155,7 @@ h3 {
     background-color: rgba(0,0,0,0.9); /* Black background with opacity */
     cursor: pointer; /* Add a pointer on hover */
     z-index: 2;
+    padding: 20px 0px 20px 0px;
 }
 
 .nameInput {
@@ -171,5 +163,11 @@ h3 {
 }
 
 #photoName {
-    width: 60%;
+    width: 80%;
+    margin: 10px 0px 10px 0px;
+}
+
+/* to hide unnecessary help-texts */
+.ui-helper-hidden-accessible {
+    display:none;
 }
