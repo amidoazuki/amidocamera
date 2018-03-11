@@ -1,173 +1,64 @@
-body {
-    margin: 0;
-    padding: 10px;
-    background-color: Silver;
-    font-family: 'Helvetica';
-}
 
 h1 {
-    text-shadow: 0 -2px 0 #999;
+    text-shadow: 2px 4px 0 #999;
     text-align: center;
-    font-size: 40px;
-    padding: 0;
-    margin: 100px 0 100px 0;
-    color: white;
+    font-size: 30px;
+    margin: 0px; 10px;
+    color: black;
 }
 
 h2 {
     text-shadow: 0 -2px 0 #999;
     text-align: center;
     font-size: 15px;
-    padding: 0;
-    margin: 10px 0 10px 0;
+    margin: 0px; 8px;
     color: blue;
 }
 
 h3 {
-    text-shadow: 0 -1px 0 #999;
+    text-shadow: 0 -2px 0 #999;
     text-align: center;
-    font-size: 15px;
-    padding: 0;
-    margin: 2px 0 2px 0;
-    color: white;
-}
-/**
- * Large Button Component
- * http://components.onsenui.io/
- */
-.button--large {
-  text-align: center;
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  margin: 20px 0 20px 0;
-  font: inherit;
-  background: transparent;
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  height: auto;
-  text-decoration: none;
-  padding: 4px 20px;
-  font-size: 16px;
-  letter-spacing: 0;
-  color: #fff;
-  text-shadow: 0 1px none;
-  vertical-align: middle;
-  background-color: #1284ff;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border: none;
-  -webkit-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-transition: background-color 0.2s linear, color 0.2s linear, opacity 0.2s linear;
-  -moz-transition: background-color 0.2s linear, color 0.2s linear, opacity 0.2s linear;
-  -o-transition: background-color 0.2s linear, color 0.2s linear, opacity 0.2s linear;
-  transition: background-color 0.2s linear, color 0.2s linear, opacity 0.2s linear;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 36px;
-  padding: 20px 10px 20px 10px;
-  display: block;
-  width: 100%;
+    font-size: 20px;
+    margin: 0px; 2px;
+    color: black;
 }
 
-.button--large:active {
-  background-color: #1284ff;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  color: #fff;
-  -webkit-transition: none;
-  -moz-transition: none;
-  -o-transition: none;
-  transition: none;
-  opacity: 0.6;
-  -webkit-transition: none;
-  -moz-transition: none;
-  -o-transition: none;
-  transition: none;
-}
-.button--large:disabled {
-  opacity: 0.3;
-  cursor: default;
-  pointer-events: none;
-}
-.button--large:hover {
-  -webkit-transition: none;
-  -moz-transition: none;
-  -o-transition: none;
-  transition: none;
-}
-.button--large:focus {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  outline: 0;
+.dialog-container {
+  width: 90vw;
+  height: 90vh;
 }
 
-.btn {
-    display: inline;
-    width: 30vw;
-    height: 32px;
-    line-height: 32px;
-    background-color: #3692ff;
-    color: #fff;
+.pictureForm {
+  width: 100vw;
+  height: 100vh;
+}
+
+/*
+from https://saruwakakun.com/html-css/reference/buttons
+*/
+.circleBtn{
+    display: inline-block;
+    text-decoration: none;
+    background: #ff8181;
+    color: #FFF;
+    font-size: 18pt;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    border-radius: 50%;
     text-align: center;
-}
- 
-.viewport {
-    width:100%;
-}
-.container {
-    text-align: center;
-}
-
-.stockImage {
-    width: 50vw;
-    height: auto;
-    margin: 0 auto;
-    border: solid;
-    border-color: white;
+    font-weight: bold;
+    vertical-align: middle;
+    overflow: hidden;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+    border-bottom: solid 3px #bd6565;
+    transition: .4s;
 }
 
-#pictureForm {
-    text-align: center;
-    display: none; /* Hidden by default */
-    position: fixed; /* Sit on top of the page content */
-    width: 100vw;
-    height: 100vh;
-    top: 0vh;
-    left: 0vw;
-    right: 0vw;
-    bottom: 0vh;
-    background-color: rgba(0,0,0,0.9); /* Black background with opacity */
-    cursor: pointer; /* Add a pointer on hover */
-    z-index: 2;
-    padding: 20px 0px 20px 0px;
-}
-
-.nameInput {
-    z-index: 2;
-}
-
-#photoName {
-    width: 80%;
-    margin: 10px 0px 10px 0px;
-}
-
-/* to hide unnecessary help-texts */
-.ui-helper-hidden-accessible {
-    display:none;
+.circleBtn:active{
+    -ms-transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+    border-bottom: none;
 }

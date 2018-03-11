@@ -17,6 +17,24 @@
        under the License.
 */
 (function(){
+Vue.use(VueOnsen);
+
+// start app
+new Vue({
+  el: '#main-page',
+  data() {
+    return {
+      dialogVisible: false,
+      photoName: ''
+    };
+  },
+  created() {
+  },
+  methods: {
+  }
+});
+
+/*
 
 var pictureCount = 0;
 var imageList = $('#imageList');
@@ -196,5 +214,6 @@ function onDeviceReady() {
     fetchAndLoadAttendeeList();
 }
 
+*/
 
 })()

@@ -5,31 +5,52 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: content: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
     <script src="components/loader.js"></script>
+    <script src="components/vue-onsenui.js"><script>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.196.0.min.js"></script>
     <link rel="stylesheet" href="components/loader.css">
-    <link rel="stylesheet" href="components/jquery-ui-1.12.1.custom/jquery-ui.min.css">
-    <link rel="stylesheet" href="components/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="viewport" class="viewport">
-        <h1>Party Camera !!</h1>
-        <h2>
-        Take pictures of people and click to name and upload them!!
-        </h2>
-        <button id="start-button" class="button--large">Start camera !!</button>
-        <div id="pictureForm">
-            <img id="imagePreview" src=""/>
-            <div id="nameInput" class="ui-widget nameInput">
-                <label for="photoName"><h3>Name the photo !!</h3></label>
-                <input id="photoName">
-            </div>
-            <button id="uploadPhoto" class="btn">Upload !!</button>
-            <button id="removePhoto" class="btn">Delete !!</button>
-            <button id="cancelPhoto" class="btn">Cancel !!</button>
-        </div>
-        <div id="imageList" class="container"></div>
+
+<v-ons-navigator id="main-navi" page="main-page">
+</v-ons-navigator>
+
+<v-ons-template id="main-page">
+  <v-ons-page id="main-page">
+    <v-ons-toolbar>
+      <div class="center"><h1>Party Camera !!</h1></div>
+    </v-ons-toolbar>
+    <div style="text-align: center;margin-top: 40vh;">
+      <h2>
+        Take pictures of people and upload !! (HIROSHIMA version)
+      </h2>
+      <v-ons-button id="start-button" @click="dialogVisible = true" class="circleBtn">START</v-ons-button>
     </div>
-    <script src="amidocamera/main.js"></script>
+  </v-ons-page>
+  <v-ons-dialog cancelable :visible.sync="dialogVisible">
+    <v-ons-page style="text-align: center;">
+      <v-ons-toolbar>
+        <div class="center"><h1>Name and upload it !!</h1></div>
+      </v-ons-toolbar>
+      <div class="background"></div>
+      <div class="content">
+        <p>
+        <img id="imagePreview" src="amidocamera/gplus.png"/>
+        <v-ons-input placeholder="Name the photo !!" v-model="photoName"></v-ons-input>
+        </p>
+        <p>
+        <div class="button-bar" style="width: 90%">
+          <div class="button-bar__item"><v-ons-button>Upload !!</v-ons-button></div>
+          <div class="button-bar__item"><v-ons-button>Delete !!</v-ons-button></div>
+          <div class="button-bar__item"><v-ons-button @click="dialogVisible = false">Cancel !!</v-ons-button></div>
+        </div>
+        </p>
+      </div>
+    </v-ons-page>
+  </v-ons-dialog>
+</v-ons-template>
+
+<script src="amidocamera/main.js"></script>
+
 </body>
 </html>
