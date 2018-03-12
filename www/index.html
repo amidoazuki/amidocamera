@@ -12,9 +12,6 @@
 </head>
 <body>
 
-<v-ons-navigator id="main-navi" page="main-page">
-</v-ons-navigator>
-
 <v-ons-template id="main-page">
   <v-ons-page id="main-page">
     <v-ons-toolbar>
@@ -35,15 +32,14 @@
       <div class="background"></div>
       <div class="content">
         <p>
-        <img id="imagePreview" src="amidocamera/gplus.png"/>
-        <v-ons-input placeholder="Name the photo !!" v-model="photoName"></v-ons-input>
+          <img id="imagePreview" src="amidocamera/gplus.png"/>
+          <v-ons-input placeholder="Name the photo !!" v-model="photoName"></v-ons-input>
         </p>
         <p>
-        <div class="button-bar" style="width: 90%">
-          <div class="button-bar__item"><v-ons-button>Upload !!</v-ons-button></div>
-          <div class="button-bar__item"><v-ons-button>Delete !!</v-ons-button></div>
-          <div class="button-bar__item"><v-ons-button @click="dialogVisible = false">Cancel !!</v-ons-button></div>
-        </div>
+          <div class="button-bar" style="width: 90%">
+            <div class="button-bar__item"><v-ons-button>Upload !!</v-ons-button></div>
+            <div class="button-bar__item"><v-ons-button @click="dialogVisible = false">Cancel !!</v-ons-button></div>
+          </div>
         </p>
       </div>
     </v-ons-page>

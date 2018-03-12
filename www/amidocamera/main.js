@@ -34,11 +34,8 @@ new Vue({
   }
 });
 
-/*
 
 var pictureCount = 0;
-var imageList = $('#imageList');
-var startButton = $('#start-button');
 var attendeeList = '';
 var s3credential = '';
 var s3bucket = '';
@@ -46,23 +43,27 @@ var attendees = [];
 
 // retrieve the list as plain-text
 var fetchAndLoadAttendeeList = function() {
-    $.get('amidocamera/urls.txt', function(data) {
-        var lines = data.split(/\r\n|\r|\n/);
+    axios.get('amidocamera/urls.txt').then(res => {
+        var lines = res.data.split(/\r\n|\r|\n/);
         attendeeList = lines[0]; // the first line
         s3credential = lines[1];
         s3bucket = lines[2];
-        $.get(attendeeList, function(data) {
-            var lines = data.split(/\r\n|\r|\n/);
+        axios.get(attendeeList).then(res => {
+            var lines = res.data.split(/\r\n|\r|\n/);
             for (var i=0; i<lines.length; i++) {
                 if (lines[i].length > 0) {
-//                    console.log(lines[i]);
+                    console.log(lines[i]);
                     attendees[i] = lines[i];
                 }
             }
-            loadNameList();
-        });
-    });
+//            loadNameList();
+        }).catch(error => { console.log(error); });
+    }).catch(error => { console.log(error); });
 };
+
+/*
+var imageList = $('#imageList');
+var startButton = $('#start-button');
 
 // setup autocomplete for name list
 var loadNameList = function () {
@@ -207,6 +208,8 @@ var s3_upload = function(photoName, dataURI, node2delete) {
     });
 };
 
+*/
+
 // PhoneGap event handler
 document.addEventListener('deviceready', onDeviceReady, false);
 function onDeviceReady() {
@@ -214,6 +217,5 @@ function onDeviceReady() {
     fetchAndLoadAttendeeList();
 }
 
-*/
 
 })()
