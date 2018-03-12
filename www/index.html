@@ -15,11 +15,11 @@
 <v-ons-template id="main-page">
   <v-ons-page id="main-page">
     <v-ons-toolbar>
-      <div class="center"><h1>Party Camera !!</h1></div>
+      <div class="center"><h1>BINGO CAMERA</h1></div>
     </v-ons-toolbar>
     <div style="text-align: center;margin-top: 40vh;">
       <h2>
-        Take pictures of people and upload !! (HIROSHIMA version)
+        <p>Take pictures of people and upload !!</p><p>(HIROSHIMA version)</p>
       </h2>
       <v-ons-button id="start-button" @click="dialogVisible = true" class="circleBtn">START</v-ons-button>
     </div>
@@ -33,7 +33,9 @@
       <div class="content">
         <p>
           <img id="imagePreview" src="amidocamera/gplus.png"/>
-          <v-ons-input placeholder="Name the photo !!" v-model="photoName"></v-ons-input>
+          <div style="text-align: center;">
+            <v-ons-input placeholder="Please name the photo." v-model="photoName"></v-ons-input>
+          </div>
         </p>
         <p>
           <div class="button-bar" style="width: 90%">
