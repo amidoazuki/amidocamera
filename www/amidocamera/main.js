@@ -21,6 +21,7 @@
 var attendeeList = '';
 var s3credential = '';
 var s3bucket = '';
+var s3folder = '';
 var pictureWidth = 600;
 var pictureHeight = 800;
 
@@ -29,6 +30,7 @@ var vm = new Vue({
   el: '#main-page',
   data: {
       dialogVisible: false,
+      photoListVisible: false,
       photoName: '',
       photoData: '',
       attendees: [],
@@ -41,7 +43,7 @@ var vm = new Vue({
         var attendee = this.attendees[i];
         var re = new RegExp(this.photoName, 'i');
         if (re.test(attendee)) {
-          console.log(attendee);
+//        console.debug(attendee);
           filtered.push(attendee);
         }
       }
@@ -49,7 +51,7 @@ var vm = new Vue({
     }
   },
   created() {
-    console.log('Vue is ready');
+    console.debug('Vue is ready');
   },
   methods: {
     takePicture(ev) {
@@ -65,20 +67,46 @@ var vm = new Vue({
       });
     },
     showUploadPhotoDialog(data) {
-      this.photoData = 'data:image/jpeg;base64,' + data;
+      this.photoName = '';
+      this.photoData = data;
       this.dialogVisible = true;
     },
     fail(msg) {
       alert(msg);
+      this.photoName = '';
+      this.photoData = '';
+      this.dialogVisible = false;
+    },
+    uploadPhoto(ev) {
+      ev.preventDefault();
+      if (this.photoName.length >0) {
+        var photoName = this.photoName + '.jpg';
+        if (s3folder.length) {
+            photoName = s3folder + '/' + photoName;
+        }
+        console.debug(photoName);
+        console.debug(this.photoName);
+        if (confirm('Upload the photo as "' + this.photoName + '" ?')) {
+          s3_upload(photoName, this.photoData); // remove leading 'data:image/jpeg;base64,'
+          this.dialogVisible = false;
+        }
+      }
+      else {
+          alert('You must enter the name !!');
+      }        
     },
     selectAttendee(attendee) {
-        console.log('selectedAttendee: ' + attendee);
+//      console.debug('selectedAttendee: ' + attendee);
         this.photoName = attendee;
         this.selectedAttendee = attendee;
     },
     inputAttendee() {
-        console.log('inputAttendee: ' + this.photoName);
+//      console.debug('inputAttendee: ' + this.photoName);
         this.selectedAttendee = null;
+        document.getElementById('upload-button-bar').scrollIntoView();
+    },
+    focusAttendee() {
+      document.getElementById('upload-button-bar').scrollIntoView();
     }
   }
 });
@@ -91,103 +119,25 @@ var fetchAndLoadAttendeeList = function() {
         attendeeList = lines[0]; // the first line
         s3credential = lines[1];
         s3bucket = lines[2];
+        s3folder = lines[3];
         axios.get(attendeeList).then(res => {
             var lines = res.data.split(/\r\n|\r|\n/);
             for (var i=0; i<lines.length; i++) {
                 if (lines[i].length > 0) {
-//                  console.log(lines[i]);
+//                  console.debug(lines[i]);
                     attendees[i] = lines[i];
                 }
             }
             vm.attendees = attendees;
-        }).catch(error => { console.log(error); });
-    }).catch(error => { console.log(error); });
-};
-
-/*
-var imageList = $('#imageList');
-var startButton = $('#start-button');
-
-// setup autocomplete for name list
-var loadNameList = function () {
-    $("#photoName").autocomplete( {
-        source: attendees,
-        classes: {
-            'ui-autocomplete': 'nameInput',
-        } 
+        }).catch(error => {
+          alert('Error while retrieving attendee list...')
+          console.debug(error);
+        });
+    }).catch(error => {
+      alert('Fialed load configuration file...');
+      console.debug(error);
     });
 };
-
-var picturePreview = function(data) {
-    $('#imagePreview').attr({'src': data, 'width': '100vw', 'height': 'auto'});
-};
-
-
-
-// generate dialog-like screen..
-var uploadPhotoDialog = function(ev) {
-    ev.preventDefault();
-    console.log('uploadPhoto');
-    var img = ev.target;
-    var form = $('#pictureForm');
-    var photoName = $('#photoName');
-    var uploadBtn = $('#uploadPhoto');
-    var removeBtn = $('#removePhoto');
-    var cancelBtn = $('#cancelPhoto');
-    uploadBtn.off('click'); // clear the event listner
-    removeBtn.off('click'); // clear the event listner
-    cancelBtn.off('click'); // clear the event listner
-    picturePreview(img.src);
-    uploadBtn.click(function(ev) {
-        ev.preventDefault();
-        if (photoName.val().length >0) {
-            if (confirm('Upload the photo as "' + photoName.val() + '" ?')) {
-                s3_upload(photoName.val(), img.src.substr(23), img.parentNode); // remove leading 'data:image/jpeg;base64,'
-            }
-        }
-        else {
-            alert('You must enter the name !!');
-        }
-    });
-    cancelBtn.click(function(ev) {
-        ev.preventDefault();
-        closeUploadPhotoDialog();
-    });
-    removeBtn.click(function(ev) {
-        ev.preventDefault();
-        if (confirm('Really delete ?')) {
-            closeUploadPhotoDialog();
-            img.parentNode.remove();
-            picturePreview(''); // clear preview
-        }
-    });
-    form.css({'display': 'inherit'}); // show it
-};
-
-var closeUploadPhotoDialog = function() {
-    var form = $('#pictureForm');
-    var photoName = $('#photoName');
-    form.css({'display': 'none'});
-    photoName.val(''); // empty the form
-};
-
-function addStock(i, data) {
-    console.log('addStock'); //debug
-    var uri = 'data:image/jpeg;base64,' + data;
-    var imgtag = $('<img>', {src: uri, class: 'stockImage'});
-    var divtag = $('<div>');
-    divtag.append('<p><b>' + i + '</b></p>');
-    imgtag.click(uploadPhotoDialog);
-    divtag.prepend(imgtag);
-    imageList.prepend(divtag);
-}
-
-var stockPicture = function(data) {
-    console.log('stockPicture'); //debug
-    pictureCount += 1;
-    addStock(pictureCount, data);
-};
-
 
 // from http://yamano3201.hatenablog.jp/entry/2016/03/05/214018
 var dataURItoBlob = function(dataURI) {
@@ -196,7 +146,7 @@ var dataURItoBlob = function(dataURI) {
     for (var i = 0; i < binary.length; i++) {
         array.push(binary.charCodeAt(i));
     }
-	return new Blob([new Uint8Array(array)], {
+    return new Blob([new Uint8Array(array)], {
     });
 };
 
@@ -204,43 +154,39 @@ var dataURItoBlob = function(dataURI) {
 // http://yamano3201.hatenablog.jp/entry/2016/03/05/214018
 // https://www.selfree.co.jp/2015/06/18/サーバーレスでjavascript-だけで画像ファイルをアップロードする方法
 var s3_client = function() {
-    console.log(s3credential);
-    console.log(s3bucket);
+    console.debug(s3credential);
+    console.debug(s3bucket);
     AWS.config.region = 'us-east-1'; // this is fixed ?
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: s3credential});
     AWS.config.credentials.get(function(err) {
         if (!err) {
-            console.log('Cognito Identify Id: ' + AWS.config.credentials.identityId);
+            console.debug('Cognito Identify Id: ' + AWS.config.credentials.identityId);
         }
     });
     return new AWS.S3({params: {Bucket: s3bucket}});
 };
 
-var s3_upload = function(photoName, dataURI, node2delete) {
-    s3_client().putObject({Key: photoName + '.jpg', ContentType: 'image/jpeg', Body: dataURItoBlob(dataURI), ACL: "public-read"},
+var s3_upload = function(photoName, dataURI) {
+    var blob = dataURItoBlob(dataURI);
+    s3_client().putObject({Key: photoName, ContentType: 'image/jpeg', Body: blob, ACL: "public-read"},
     function(err, data){
         // if failed, alert
         if(!err){
-            $(node2delete).find('b').text(photoName); // update the photo name
-            if(confirm('File successfully uploaded !\nDelete it ?')) {
-                node2delete.remove();
-            }
-            console.log('File successfully uploaded !')
+          alert("File successfully uploaded !");
+          console.debug('File successfully uploaded !')
         } else {
             alert('Error while uploading file...');
-            console.log('Error while uploading file...');
-            console.log(err);
+            console.debug('Error while uploading file...');
+            console.debug(err);
         }
-        closeUploadPhotoDialog();
+        delete blob;
     });
 };
-
-*/
 
 // PhoneGap event handler
 document.addEventListener('deviceready', onDeviceReady, false);
 function onDeviceReady() {
-    console.log('PhoneGap is ready');
+    console.debug('PhoneGap is ready');
     fetchAndLoadAttendeeList();
 }
 

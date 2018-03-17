@@ -8,19 +8,21 @@
     <script src="components/vue-onsenui.js"></script>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.196.0.min.js"></script>
     <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="css/vue2-autocomplete.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <v-ons-template id="main-page">
-  <v-ons-page id="main-page">
+  <v-ons-page>
     <v-ons-toolbar>
       <div class="center"><h1>BINGO CAMERA</h1></div>
     </v-ons-toolbar>
-    <div style="text-align: center;margin-top: 40vh;">
+    <div style="text-align: center;margin-top: 10vh;">
+      <p><v-ons-button @click="photoListVisible = true" class="circleBtn" style="font-size: small;">PHOTO LIST</v-ons-button></p>
       <h2>
         <p>Take pictures of people and upload !!</p><p>(HIROSHIMA version)</p>
       </h2>
-      <v-ons-button id="start-button" @click="takePicture" class="circleBtn">START</v-ons-button>
+      <p><v-ons-button @click="takePicture" class="circleBtn">START</v-ons-button></p>
     </div>
   </v-ons-page>
   <v-ons-dialog cancelable :visible.sync="dialogVisible">
@@ -31,20 +33,30 @@
       <div class="background"></div>
       <div class="content">
         <p>
-          <img :src="photoData"/>
+          <img :src="'data:image/jpeg;base64,' + photoData"/>
           <div style="text-align: center;" class="autocomplete">
-            <v-ons-input placeholder="Please name the photo." v-model="photoName" v-on:input="inputAttendee"></v-ons-input>
-            <ul v-if="!selectedAttendee && photoName.length"> 
-              <li v-for="attendee in filteredAttendees" @click="selectAttendee(attendee)">{{attendee}}</li>
-            </ul>
+            <v-ons-list modifier="inset" v-if="!selectedAttendee && photoName.length" class="autocomplete-list"> 
+              <v-ons-list-item v-for="attendee in filteredAttendees" @click="selectAttendee(attendee)">{{attendee}}</v-ons-list-item>
+            </v-ons-list>
           </div>
+          <v-ons-input placeholder="Please name the photo." v-model="photoName" v-on:input="inputAttendee" v-on:focus="focusAttendee"></v-ons-input>
         </p>
         <p>
-          <div class="button-bar" style="width: 90%">
-            <div class="button-bar__item"><v-ons-button>Upload !!</v-ons-button></div>
+          <div id="upload-button-bar" class="button-bar" style="width: 90%">
+            <div class="button-bar__item"><v-ons-button @click="uploadPhoto">Upload !!</v-ons-button></div>
             <div class="button-bar__item"><v-ons-button @click="dialogVisible = false">Cancel !!</v-ons-button></div>
           </div>
         </p>
+      </div>
+    </v-ons-page>
+  </v-ons-dialog>
+  <v-ons-dialog cancelable :visible.sync="photoListVisible">
+    <v-ons-page style="text-align: center;">
+      <v-ons-toolbar>
+        <div class="center"><h1>PHOTO LIST</h1></div>
+      </v-ons-toolbar>
+      <div class="background"></div>
+      <div class="content">
       </div>
     </v-ons-page>
   </v-ons-dialog>

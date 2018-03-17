@@ -27,11 +27,6 @@ h2 {
     height: auto;
 }
 
-.pictureForm {
-  width: 100vw;
-  height: 100vh;
-}
-
 /*
 from https://saruwakakun.com/html-css/reference/buttons
 */
@@ -62,78 +57,18 @@ from https://saruwakakun.com/html-css/reference/buttons
     border-bottom: none;
 }
 
-// from vue2-autocomplete
-.transition, .autocomplete, .showAll-transition, .autocomplete ul, .autocomplete ul li a{
-  transition:all 0.3s ease-out;
-  -moz-transition:all 0.3s ease-out;
-  -webkit-transition:all 0.3s ease-out;
-  -o-transition:all 0.3s ease-out;
+.autocomplete {
+    position: relative;
+    width: available;
+    z-index: 10002;
 }
-
-.autocomplete ul{
-  font-family: sans-serif;
-  position: absolute;
-  list-style: none;
-  background: #f8f8f8;
-  padding: 10px 0;
-  margin: 0;
-  display: inline-block;
-  min-width: 15%;
-  margin-top: 10px;
-}
-
-.autocomplete ul:before{
-  content: "";
+.autocomplete-list {
+    position: absolute;
+    bottom: 0;
   display: block;
-  position: absolute;
-  height: 0;
-  width: 0;
-  border: 10px solid transparent;
-  border-bottom: 10px solid #f8f8f8;
-  left: 46%;
-  top: -20px
+  max-height: 60vh;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  -ms-scroll-snap-type: mandatory;
 }
-
-.autocomplete ul li a{
-  text-decoration: none;
-  display: block;
-  background: #f8f8f8;
-  color: #2b2b2b;
-  padding: 5px;
-  padding-left: 10px;
-}
-
-.autocomplete ul li a:hover, .autocomplete ul li.focus-list a{
-  color: white;
-  background: #2F9AF7;
-}
-
-.autocomplete ul li a span, /*backwards compat*/
-.autocomplete ul li a .autocomplete-anchor-label{
-  display: block;
-  margin-top: 3px;
-  color: grey;
-  font-size: 13px;
-}
-
-.autocomplete ul li a:hover .autocomplete-anchor-label, 
-.autocomplete ul li.focus-list a span, /*backwards compat*/
-.autocomplete ul li a:hover .autocomplete-anchor-label, 
-.autocomplete ul li.focus-list a span{ /*backwards compat*/
-  color: white;
-}
-
-/*.showAll-transition{
-  opacity: 1;
-  height: 50px;
-  overflow: hidden;
-}
-
-.showAll-enter{
-  opacity: 0.3;
-  height: 0;
-}
-
-.showAll-leave{
-  display: none;
-}*/
