@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: content: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
     <script src="components/loader.js"></script>
-    <script src="components/vue-onsenui.js"><script>
+    <script src="components/vue-onsenui.js"></script>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.196.0.min.js"></script>
     <link rel="stylesheet" href="components/loader.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <v-ons-template id="main-page">
   <v-ons-page id="main-page">
     <v-ons-toolbar>
@@ -21,20 +20,23 @@
       <h2>
         <p>Take pictures of people and upload !!</p><p>(HIROSHIMA version)</p>
       </h2>
-      <v-ons-button id="start-button" @click="dialogVisible = true" class="circleBtn">START</v-ons-button>
+      <v-ons-button id="start-button" @click="takePicture" class="circleBtn">START</v-ons-button>
     </div>
   </v-ons-page>
   <v-ons-dialog cancelable :visible.sync="dialogVisible">
     <v-ons-page style="text-align: center;">
       <v-ons-toolbar>
-        <div class="center"><h1>Name and upload it !!</h1></div>
+        <div class="center"><h1>NAME AND UPLOAD</h1></div>
       </v-ons-toolbar>
       <div class="background"></div>
       <div class="content">
         <p>
-          <img id="imagePreview" src="amidocamera/gplus.png"/>
-          <div style="text-align: center;">
-            <v-ons-input placeholder="Please name the photo." v-model="photoName"></v-ons-input>
+          <img :src="photoData"/>
+          <div style="text-align: center;" class="autocomplete">
+            <v-ons-input placeholder="Please name the photo." v-model="photoName" v-on:input="inputAttendee"></v-ons-input>
+            <ul v-if="!selectedAttendee && photoName.length"> 
+              <li v-for="attendee in filteredAttendees" @click="selectAttendee(attendee)">{{attendee}}</li>
+            </ul>
           </div>
         </p>
         <p>

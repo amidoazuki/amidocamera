@@ -1,6 +1,6 @@
 
 h1 {
-    text-shadow: 2px 4px 0 #999;
+    text-shadow: 0px 4px 2px #c0c0c0;
     text-align: center;
     font-size: 30px;
     margin: 0px; 10px;
@@ -8,24 +8,23 @@ h1 {
 }
 
 h2 {
-    text-shadow: 0 -2px 0 #999;
+    text-shadow: 0px 2px 1px #c0c0c0;
     text-align: center;
     font-size: 24px;
     margin: 0px; 8px;
     color: blue;
 }
 
-h3 {
-    text-shadow: 0 -2px 0 #999;
-    text-align: center;
-    font-size: 20px;
-    margin: 0px; 2px;
-    color: black;
-}
 
 .dialog-container {
   width: 95vw;
   height: 95vh;
+}
+
+.dialog-container img {
+    margin: 2px;
+    width: 70vw;
+    height: auto;
 }
 
 .pictureForm {
@@ -62,3 +61,79 @@ from https://saruwakakun.com/html-css/reference/buttons
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
     border-bottom: none;
 }
+
+// from vue2-autocomplete
+.transition, .autocomplete, .showAll-transition, .autocomplete ul, .autocomplete ul li a{
+  transition:all 0.3s ease-out;
+  -moz-transition:all 0.3s ease-out;
+  -webkit-transition:all 0.3s ease-out;
+  -o-transition:all 0.3s ease-out;
+}
+
+.autocomplete ul{
+  font-family: sans-serif;
+  position: absolute;
+  list-style: none;
+  background: #f8f8f8;
+  padding: 10px 0;
+  margin: 0;
+  display: inline-block;
+  min-width: 15%;
+  margin-top: 10px;
+}
+
+.autocomplete ul:before{
+  content: "";
+  display: block;
+  position: absolute;
+  height: 0;
+  width: 0;
+  border: 10px solid transparent;
+  border-bottom: 10px solid #f8f8f8;
+  left: 46%;
+  top: -20px
+}
+
+.autocomplete ul li a{
+  text-decoration: none;
+  display: block;
+  background: #f8f8f8;
+  color: #2b2b2b;
+  padding: 5px;
+  padding-left: 10px;
+}
+
+.autocomplete ul li a:hover, .autocomplete ul li.focus-list a{
+  color: white;
+  background: #2F9AF7;
+}
+
+.autocomplete ul li a span, /*backwards compat*/
+.autocomplete ul li a .autocomplete-anchor-label{
+  display: block;
+  margin-top: 3px;
+  color: grey;
+  font-size: 13px;
+}
+
+.autocomplete ul li a:hover .autocomplete-anchor-label, 
+.autocomplete ul li.focus-list a span, /*backwards compat*/
+.autocomplete ul li a:hover .autocomplete-anchor-label, 
+.autocomplete ul li.focus-list a span{ /*backwards compat*/
+  color: white;
+}
+
+/*.showAll-transition{
+  opacity: 1;
+  height: 50px;
+  overflow: hidden;
+}
+
+.showAll-enter{
+  opacity: 0.3;
+  height: 0;
+}
+
+.showAll-leave{
+  display: none;
+}*/

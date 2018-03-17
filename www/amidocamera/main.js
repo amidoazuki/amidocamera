@@ -17,32 +17,75 @@
        under the License.
 */
 (function(){
-Vue.use(VueOnsen);
 
-// start app
-new Vue({
-  el: '#main-page',
-  data() {
-    return {
-      dialogVisible: false,
-      photoName: ''
-    };
-  },
-  created() {
-  },
-  methods: {
-  }
-});
-
-
-var pictureCount = 0;
 var attendeeList = '';
 var s3credential = '';
 var s3bucket = '';
-var attendees = [];
+var pictureWidth = 600;
+var pictureHeight = 800;
+
+// start app
+var vm = new Vue({
+  el: '#main-page',
+  data: {
+      dialogVisible: false,
+      photoName: '',
+      photoData: '',
+      attendees: [],
+      selectedAttendee: null,
+  },
+  computed: {
+    filteredAttendees: function() {
+      var filtered = [];
+      for (var i=0; i<this.attendees.length; i++) {
+        var attendee = this.attendees[i];
+        var re = new RegExp(this.photoName, 'i');
+        if (re.test(attendee)) {
+          console.log(attendee);
+          filtered.push(attendee);
+        }
+      }
+      return filtered;
+    }
+  },
+  created() {
+    console.log('Vue is ready');
+  },
+  methods: {
+    takePicture(ev) {
+      ev.preventDefault();
+      navigator.camera.getPicture(this.showUploadPhotoDialog, this.fail, {
+        sourceType: Camera.PictureSourceType.CAMERA,
+        encodingType: Camera.EncodingType.JPEG,
+        quality : 70,
+        destinationType: Camera.DestinationType.DATA_URL,
+        targetWidth: pictureWidth,
+        targetHeight: pictureHeight,
+        correctOrientation: true
+      });
+    },
+    showUploadPhotoDialog(data) {
+      this.photoData = 'data:image/jpeg;base64,' + data;
+      this.dialogVisible = true;
+    },
+    fail(msg) {
+      alert(msg);
+    },
+    selectAttendee(attendee) {
+        console.log('selectedAttendee: ' + attendee);
+        this.photoName = attendee;
+        this.selectedAttendee = attendee;
+    },
+    inputAttendee() {
+        console.log('inputAttendee: ' + this.photoName);
+        this.selectedAttendee = null;
+    }
+  }
+});
 
 // retrieve the list as plain-text
 var fetchAndLoadAttendeeList = function() {
+    var attendees = [];
     axios.get('amidocamera/urls.txt').then(res => {
         var lines = res.data.split(/\r\n|\r|\n/);
         attendeeList = lines[0]; // the first line
@@ -52,11 +95,11 @@ var fetchAndLoadAttendeeList = function() {
             var lines = res.data.split(/\r\n|\r|\n/);
             for (var i=0; i<lines.length; i++) {
                 if (lines[i].length > 0) {
-                    console.log(lines[i]);
+//                  console.log(lines[i]);
                     attendees[i] = lines[i];
                 }
             }
-//            loadNameList();
+            vm.attendees = attendees;
         }).catch(error => { console.log(error); });
     }).catch(error => { console.log(error); });
 };
@@ -79,9 +122,7 @@ var picturePreview = function(data) {
     $('#imagePreview').attr({'src': data, 'width': '100vw', 'height': 'auto'});
 };
 
-var fail = function(msg) {
-    alert(msg);
-};
+
 
 // generate dialog-like screen..
 var uploadPhotoDialog = function(ev) {
@@ -147,20 +188,6 @@ var stockPicture = function(data) {
     addStock(pictureCount, data);
 };
 
-var takePicture = function(ev) {
-    ev.preventDefault();
-    navigator.camera.getPicture(stockPicture, fail, {
-        sourceType: Camera.PictureSourceType.CAMERA,
-        encodingType: Camera.EncodingType.JPEG,
-        quality : 70,
-        destinationType: Camera.DestinationType.DATA_URL,
-        targetWidth: 600,
-        targetHeight: 800,
-        correctOrientation: true
-    });
-};
-startButton.click(takePicture);
-startButton.focus();
 
 // from http://yamano3201.hatenablog.jp/entry/2016/03/05/214018
 var dataURItoBlob = function(dataURI) {
