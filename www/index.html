@@ -17,10 +17,10 @@
     <v-ons-toolbar>
       <div class="center"><h1>BINGO CAMERA</h1></div>
     </v-ons-toolbar>
-    <div style="text-align: center;margin-top: 10vh;">
-      <p><v-ons-button @click="photoListVisible = true" class="circleBtn" style="font-size: small;">PHOTO LIST</v-ons-button></p>
+    <div style="text-align: center;margin-top: 15vh;">
+      <p v-if="s3ready"><v-ons-button @click="listPhotos" class="circleBtn2">PHOTO LIST</v-ons-button></p>
       <h2>
-        <p>Take pictures of people and upload !!</p><p>(HIROSHIMA version)</p>
+        <p>(HIROSHIMA version)</p>
       </h2>
       <p><v-ons-button @click="takePicture" class="circleBtn">START</v-ons-button></p>
     </div>
@@ -53,10 +53,24 @@
   <v-ons-dialog cancelable :visible.sync="photoListVisible">
     <v-ons-page style="text-align: center;">
       <v-ons-toolbar>
-        <div class="center"><h1>PHOTO LIST</h1></div>
+        <div class="center"><h1>Photo List {{photoProgress}}</h1></div>
       </v-ons-toolbar>
       <div class="background"></div>
       <div class="content">
+        <div>
+          <div style="width: 75%; float: left;">
+          　<v-ons-list>
+          　   <v-ons-list-header @click="sortPhotoList('name')"><h3>Name</h3></v-ons-list-header>
+              <v-ons-list-item v-for="sorted in sortedAttendees">{{sorted}}</v-ons-list-item>
+            </v-ons-list>
+          </div>
+          <div>
+            <v-ons-list>
+          　   <v-ons-list-header @click="sortPhotoList('photo')"><h3>Photo</h3></v-ons-list-header>
+              <v-ons-list-item v-for="hasPhoto in photosOnServer" :key="hasPhoto" :class="{red: hasPhoto === 'No', blue: hasPhoto === 'Yes'}">{{hasPhoto}}</v-ons-list-item>
+            </v-ons-list>
+          </div>
+        </div>
       </div>
     </v-ons-page>
   </v-ons-dialog>
