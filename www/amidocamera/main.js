@@ -179,7 +179,7 @@ var fetchAndLoadParams = function() {
             for (var i=0; i<lines.length; i++) {
                 if (lines[i].length > 0) {
 //                  console.debug(lines[i]);
-                    attendees[i] = {name: lines[i].trim(), photo: ''};
+                    attendees[i] = {name: lines[i].trim(), photo: 'No'}; // No as default
                 }
             }
             s3client = s3_client();

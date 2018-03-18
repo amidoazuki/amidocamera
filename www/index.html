@@ -53,20 +53,20 @@
   <v-ons-dialog cancelable :visible.sync="photoListVisible">
     <v-ons-page style="text-align: center;">
       <v-ons-toolbar>
-        <div class="center"><h1>Photo List {{photoProgress}}</h1></div>
+        <div class="center"><h3>Photo List {{photoProgress}}</h3></div>
       </v-ons-toolbar>
       <div class="background"></div>
       <div class="content">
         <div>
           <div style="width: 75%; float: left;">
           　<v-ons-list>
-          　   <v-ons-list-header @click="sortPhotoList('name')"><h3>Name</h3></v-ons-list-header>
+          　   <v-ons-list-header @click="sortPhotoList('name')"><h4>Name</h4></v-ons-list-header>
               <v-ons-list-item v-for="sorted in sortedAttendees">{{sorted}}</v-ons-list-item>
             </v-ons-list>
           </div>
           <div>
             <v-ons-list>
-          　   <v-ons-list-header @click="sortPhotoList('photo')"><h3>Photo</h3></v-ons-list-header>
+          　   <v-ons-list-header @click="sortPhotoList('photo')"><h4>Photo</h4></v-ons-list-header>
               <v-ons-list-item v-for="hasPhoto in photosOnServer" :key="hasPhoto" :class="{red: hasPhoto === 'No', blue: hasPhoto === 'Yes'}">{{hasPhoto}}</v-ons-list-item>
             </v-ons-list>
           </div>

@@ -23,6 +23,14 @@ h3 {
     color: black;
 }
 
+h4 {
+    text-shadow: 0px 2px 1px #c0c0c0;
+    text-align: center;
+    font-size: 12px;
+    margin: 0px; 2px;
+    color: black;
+}
+
 .dialog-container {
   width: 95vw;
   height: 95vh;
@@ -59,7 +67,7 @@ from https://saruwakakun.com/html-css/reference/buttons
 .circleBtn:active{
     -ms-transform: translateY(2px);
     -webkit-transform: translateY(2px);
-    transform: translateY(2px);
+    transform: translateY(4px);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
     border-bottom: none;
 }
@@ -69,10 +77,10 @@ from https://saruwakakun.com/html-css/reference/buttons
     text-decoration: none;
     background: #4040ff;
     color: #FFF;
-    font-size: 10pt;
-    width: 120px;
-    height: 120px;
-    line-height: 120px;
+    font-size: 6pt;
+    width: 90px;
+    height: 90px;
+    line-height: 90px;
     border-radius: 50%;
     text-align: center;
     font-weight: bold;
@@ -86,7 +94,7 @@ from https://saruwakakun.com/html-css/reference/buttons
 .circleBtn2:active{
     -ms-transform: translateY(2px);
     -webkit-transform: translateY(2px);
-    transform: translateY(2px);
+    transform: translateY(4px);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
     border-bottom: none;
 }
