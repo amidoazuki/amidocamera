@@ -61,13 +61,13 @@
           <div style="width: 75%; float: left;">
           　<v-ons-list>
           　   <v-ons-list-header @click="sortPhotoList('name')"><h4>Name</h4></v-ons-list-header>
-              <v-ons-list-item v-for="sorted in sortedAttendees">{{sorted}}</v-ons-list-item>
+              <v-ons-list-item v-for="attendee1 in attendees" :key="attendee1.name">{{attendee1.name}}</v-ons-list-item>
             </v-ons-list>
           </div>
           <div>
             <v-ons-list>
           　   <v-ons-list-header @click="sortPhotoList('photo')"><h4>Photo</h4></v-ons-list-header>
-              <v-ons-list-item v-for="hasPhoto in photosOnServer" :key="hasPhoto" :class="{red: hasPhoto === 'No', blue: hasPhoto === 'Yes'}">{{hasPhoto}}</v-ons-list-item>
+              <v-ons-list-item v-for="attendee2 in attendees" :key="attendee2.photo" :class="{red: attendee2.photo === 'No', blue: attendee2.photo === 'Yes'}">{{attendee2.photo}}</v-ons-list-item>
             </v-ons-list>
           </div>
         </div>

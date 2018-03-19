@@ -36,10 +36,10 @@ var vm = new Vue({
       photoData: '',
       attendees: [],
       selectedAttendee: null,
-      uploadedPhotos: [],
       attendeeSortMethod: 'asc',
-      photosSortMethod: 'asc',
-      s3ready: false
+      photosSortMethod: 'desc',
+      s3ready: false,
+      lastSortedMethod: {key: 'photo', order: 'desc'}
   },
   computed: {
     filteredAttendees: function() {
@@ -53,28 +53,6 @@ var vm = new Vue({
         }
       }
       return filtered.sort();
-    },
-    sortedAttendees: function() {
-        var sorted = [];
-        for (var i=0; i<this.attendees.length; i++) {
-            sorted[i] = this.attendees[i].name;
-//            console.debug('sorted: ' + sorted[i]);
-        }
-        return sorted;  
-    },
-    photosOnServer: function() {
-        var sorted = [];
-        for (var i=0; i<this.attendees.length; i++) {
-            if (this.uploadedPhotos.indexOf(this.attendees[i].name) >= 0) {
-                this.attendees[i].photo = 'Yes';
-            }
-            else {
-                this.attendees[i].photo = 'No';
-            }
-            sorted[i] = this.attendees[i].photo;
-//            console.debug('photos: ' + sorted[i]);
-        }
-        return sorted;
     },
     photoProgress: function() {
         var count = 0;
@@ -149,17 +127,32 @@ var vm = new Vue({
     },
     listPhotos: function() {
         s3_listfiles();
-//        console.debug('listPhotos: ' + this.uploadedPhotos);
         this.photoListVisible = true;
+    },
+    updateAttendeesList: function(files) {
+        for (var i=0; i<this.attendees.length; i++) {
+            if (files.indexOf(this.attendees[i].name) >= 0) {
+                this.attendees[i].photo = 'Yes';
+            }
+            else {
+                this.attendees[i].photo = 'No';
+            }
+//            console.debug('photos: ' + sorted[i]);
+        }
+    
     },
     sortPhotoList: function(key) {
         if (key === 'name') {
             this.attendeeSortMethod = (this.attendeeSortMethod === 'asc')? 'desc': 'asc';
             this.attendees.sort(compareValues(key, this.attendeeSortMethod));
+            this.lastSortedMethod.key = key;
+            this.lastSortedMethod.order = this.attendeeSortMethod;
         }
         if (key === 'photo') {
             this.photosSortMethod = (this.photosSortMethod === 'asc')? 'desc': 'asc';
             this.attendees.sort(compareValues(key, this.photosSortMethod));
+            this.lastSortedMethod.key = key;
+            this.lastSortedMethod.order = this.photosSortMethod;
         }
     }
   }
@@ -271,7 +264,9 @@ var s3_listfiles = function() {
               }
           }
       }
-      vm.uploadedPhotos = files;
+      vm.updateAttendeesList(files);
+      // sort with the previous sorting method (also prevent crash on 1st sort by name ??)
+      vm.attendees.sort(compareValues(vm.lastSortedMethod.key, vm.lastSortedMethod.order));      
     }
   });
 }
